@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:sec="http://www.springframework.org/schema/security"
+             xmlns="http://www.springframework.org/schema/security"
+             xsi:schemaLocation="http://www.springframework.org/schema/security
+      http://www.springframework.org/schema/security/spring-security-4.0.xsd
+      http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+    <sec:http auto-config="false" create-session="stateless" entry-point-ref="restAuthenticationEntryPoint">
+        <sec:intercept-url pattern="/login" access="permitAll()" method="POST"/>
+        <sec:intercept-url pattern="/user/add" access="hasRole('ROLE_ADMIN')"/>
+        <sec:intercept-url pattern="/user/list" access="hasRole('ROLE_ADMIN')"/>
+        <sec:intercept-url pattern="/user/get/*" access="hasRole('ROLE_ADMIN')"/>
+        <sec:intercept-url pattern="/restaurant/add" access="hasRole('ROLE_ADMIN')"/>
+        <sec:intercept-url pattern="/restaurant/list" access="isAuthenticated()"/>
+        <sec:intercept-url pattern="/restaurant/get/*" access="isAuthenticated()"/>
+        <sec:intercept-url pattern="/vote/today-list" access="hasRole('ROLE_ADMIN')"/>
+        <sec:intercept-url pattern="/vote/get/*" access="hasRole('ROLE_USER')"/>
+
+
+        <sec:access-denied-handler ref="accessDeniedHandler"/>
+        <sec:intercept-url pattern="/**" access="isAuthenticated()"/>
+        <sec:csrf disabled="true"/>
+        <sec:form-login authentication-success-handler-ref="successHandler" default-target-url="/user/current"
+                        authentication-failure-handler-ref="failureHandler"/>
+        <sec:access-denied-handler ref="accessDeniedHandler"/>
+        <sec:custom-filter ref="statelessLoginFilter" before="FORM_LOGIN_FILTER"/>
+        <sec:custom-filter ref="statelessAuthenticationFilter" after="FORM_LOGIN_FILTER"/>
+        <sec:logout logout-url="/logout" success-handler-ref="logoutSuccessHandler"/>
+    </sec:http>
+
+    <beans:bean id="logoutSuccessHandler"
+                class="uz.sherzodn.web.handler.LogoutSuccessHandler">
+        <beans:constructor-arg value="/"/>
+    </beans:bean>
+
+    <!--Token filters-->
+    <beans:bean id="statelessLoginFilter"
+                class="uz.sherzodn.web.filter.StatelessLoginFilter">
+        <beans:constructor-arg value="/login"/>
+        <beans:constructor-arg ref="tokenAuthenticationHandler"/>
+        <beans:constructor-arg ref="userManager"/>
+        <beans:constructor-arg ref="restAuthenticationManager"/>
+    </beans:bean>
+    <beans:bean id="statelessAuthenticationFilter"
+                class="uz.sherzodn.web.filter.StatelessAuthenticationFilter">
+        <beans:constructor-arg ref="tokenAuthenticationHandler"/>
+    </beans:bean>
+
+    <!-- Entry point for REST service. -->
+    <beans:bean id="restAuthenticationEntryPoint"
+                class="uz.sherzodn.web.handler.RestAuthenticationEntryPoint"/>
+    <!-- Using Authentication Access Denied handler -->
+    <beans:bean id="accessDeniedHandler"
+                class="uz.sherzodn.web.handler.RestAuthenticationAccessDeniedHandler"/>
+    <!-- Connect the custom authentication success handler -->
+    <beans:bean id="successHandler"
+                class="uz.sherzodn.web.handler.RestAuthenticationSuccessHandler"/>
+    <!-- Using default failure handler -->
+    <beans:bean id="failureHandler"
+                class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler"/>
+
+    <beans:bean id="myAuthAuthProvider"
+                class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
+
+        <beans:property name="preAuthenticatedUserDetailsService">
+            <beans:bean id="userDetailsServiceWrapper"
+                        class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper">
+                <beans:property
+                        name="userDetailsService" ref="userManager"/>
+            </beans:bean>
+        </beans:property>
+    </beans:bean>
+
+    <!--Token provider-->
+    <beans:bean id="cryptTokenHanlder"
+                class="uz.sherzodn.web.handler.token.CryptTokenHandler">
+        <beans:constructor-arg
+                value="MEtIUXRkQ3kwTGpRdk5DNzBMZ2cwSmJRdnRDOTBMRFF0dEMrMEwwZzBJN1F0OUN4MExYUXV0QzQwWUhSZ3RDKzBMMGcwSkxRc05HQzBMRFF2ZEM0MEx3aElTRT0="/>
+        <!--!!! NOTE !!! This should be not big amount, since when user changes authorities and password sessions not invalidated -->
+        <beans:constructor-arg value="120"/>
+    </beans:bean>
+
+    <beans:bean id="cacheTokenHanlder"
+                class="uz.sherzodn.web.handler.token.CacheTokenHandler"/>
+    <beans:bean id="tokenAuthenticationHandler"
+                class="uz.sherzodn.web.handler.token.TokenAuthenticationHandler">
+        <beans:constructor-arg ref="cacheTokenHanlder"/>
+
+    </beans:bean>
+
+    <beans:bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <beans:property name="cacheManager" ref="ehcache"/>
+    </beans:bean>
+
+    <beans:bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <beans:property name="configLocation" value="WEB-INF/ehcache.xml"/>
+    </beans:bean>
+
+    <!--Authentication providers-->
+    <beans:bean id="daoAuthenticationProvider"
+                class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <beans:property name="userDetailsService" ref="userManager"/>
+        <beans:property name="passwordEncoder" ref="passwordEncoder"/>
+    </beans:bean>
+    <beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+    <!-- Authentication manager -->
+    <authentication-manager alias="restAuthenticationManager">
+        <authentication-provider ref="daoAuthenticationProvider"/>
+    </authentication-manager>
+</beans:beans>
