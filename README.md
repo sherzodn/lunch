@@ -34,12 +34,12 @@ mvn jetty:run
 #### Authentication and authorization
 Spring Security is used for providing both authentication (Token Based Authentication) and authorization.
 #### How Token Based Works
->Token based authentication is stateless. We are not storing any information about our user on the server or in a session.
+Token based authentication is stateless. We are not storing any information about our user on the server or in a session.
 ######  User Requests Access with Username / Password
 ```sh
 curl -v -H "Content-Type: application/json" -X POST -d '{"username":"admin", "password":"admin"}' http://localhost:8080/login
 ```
-> After above request application validates credentials and provides a signed token (named as X-AUTH-TOKEN) to the client. Client stores that token and sends it along with every request. This token should be sent in the HTTP header.
+After above request application validates credentials and provides a signed token (named as X-AUTH-TOKEN) to the client. Client stores that token and sends it along with every request. This token should be sent in the HTTP header.
 # CURL commands samples
 #### 1. Admin users
 #### 1.1 Create/Update user
