@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import uz.sherzodn.web.dto.SystemUser;
+import uz.sherzodn.web.handler.SystemUser;
 
 import java.nio.charset.Charset;
 

@@ -1,4 +1,4 @@
-package uz.sherzodn.web.dto;
+package uz.sherzodn.web.handler;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;

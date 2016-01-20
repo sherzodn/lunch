@@ -1,16 +1,14 @@
 package uz.sherzodn.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.sherzodn.dao.UserDao;
 import uz.sherzodn.model.Role;
 import uz.sherzodn.model.User;
 import uz.sherzodn.service.UserManager;
-import uz.sherzodn.web.dto.SystemUser;
+import uz.sherzodn.web.handler.SystemUser;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;

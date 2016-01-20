@@ -2,11 +2,9 @@ package uz.sherzodn.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.sherzodn.model.Restaurant;
 import uz.sherzodn.service.RestaurantManager;
-import uz.sherzodn.web.query.PaginatedResult;
 
 import java.util.List;
 
@@ -27,7 +25,6 @@ public class RestaurantController extends BaseController {
      * @return saved/updated restaurant object
      */
     @RequestMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseBody
     public Restaurant addRestaurant(@RequestBody Restaurant restaurant) {
         return restaurantManager.save(restaurant);

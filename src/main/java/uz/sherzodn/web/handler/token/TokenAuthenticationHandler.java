@@ -1,9 +1,8 @@
 package uz.sherzodn.web.handler.token;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import uz.sherzodn.web.dto.SystemUser;
-import uz.sherzodn.web.dto.UserAuthentication;
+import uz.sherzodn.web.handler.SystemUser;
+import uz.sherzodn.web.handler.UserAuthentication;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

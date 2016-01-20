@@ -9,8 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import uz.sherzodn.web.dto.SystemUser;
-import uz.sherzodn.web.dto.UserAuthentication;
+import uz.sherzodn.web.handler.SystemUser;
+import uz.sherzodn.web.handler.UserAuthentication;
 import uz.sherzodn.web.handler.AuthenticationFilterException;
 import uz.sherzodn.web.handler.token.TokenAuthenticationHandler;
 

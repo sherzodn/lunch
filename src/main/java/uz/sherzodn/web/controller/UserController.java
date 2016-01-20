@@ -4,16 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import uz.sherzodn.model.User;
 import uz.sherzodn.service.UserManager;
-import uz.sherzodn.web.dto.SystemUser;
-import uz.sherzodn.web.dto.UserAuthentication;
+import uz.sherzodn.web.handler.SystemUser;
+import uz.sherzodn.web.handler.UserAuthentication;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 /**

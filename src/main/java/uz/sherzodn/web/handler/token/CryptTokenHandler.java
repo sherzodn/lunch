@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uz.sherzodn.web.dto.SystemUser;
+import uz.sherzodn.web.handler.SystemUser;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;

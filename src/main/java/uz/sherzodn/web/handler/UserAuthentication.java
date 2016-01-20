@@ -1,4 +1,4 @@
-package uz.sherzodn.web.dto;
+package uz.sherzodn.web.handler;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

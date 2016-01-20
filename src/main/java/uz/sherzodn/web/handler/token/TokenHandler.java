@@ -1,6 +1,6 @@
 package uz.sherzodn.web.handler.token;
 
-import uz.sherzodn.web.dto.SystemUser;
+import uz.sherzodn.web.handler.SystemUser;
 
 /**
  * Created by Sherzod Nurjonov

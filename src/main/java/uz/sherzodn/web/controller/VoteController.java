@@ -3,11 +3,9 @@ package uz.sherzodn.web.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.sherzodn.model.Restaurant;
 import uz.sherzodn.model.User;
@@ -16,7 +14,7 @@ import uz.sherzodn.service.RestaurantManager;
 import uz.sherzodn.service.UserManager;
 import uz.sherzodn.service.VoteManager;
 import uz.sherzodn.utils.DateUtils;
-import uz.sherzodn.web.dto.SystemUser;
+import uz.sherzodn.web.handler.SystemUser;
 
 import java.util.Date;
 import java.util.List;
@@ -50,7 +48,6 @@ public class VoteController extends BaseController {
      * @return ResponseEntity
      */
     @RequestMapping(value = "/get/{restaurantId}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> voteRestaurant(@PathVariable Long restaurantId) {
         Restaurant restaurant = restaurantManager.get(restaurantId);
         SystemUser systemUser = getCurrentUser();
@@ -76,7 +73,6 @@ public class VoteController extends BaseController {
     }
 
     @RequestMapping(value = "/today-list", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseBody
     public List<Vote> getTodayVotesByRestaurant() {
         return voteManager.getVotesToday();
